@@ -6,7 +6,7 @@ This Processing Sketch simulates a pendulum wave with accurate pendulum arm leng
 
 <br>
 
-![Alt Text}(https://github.com/VictorSuciu/README-Assets/blob/master/Pendulum/PendulumGifHD.gif)
+![Alt Text](https://github.com/VictorSuciu/README-Assets/blob/master/Pendulum/PendulumGifHD.gif)
 
 <br>
 
