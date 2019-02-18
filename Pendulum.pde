@@ -1,5 +1,5 @@
 public class Pendulum {
-  private final float GRAV_CONST = PendulumSketch.GRAV_CONST;
+  private float gravConst = PendulumSketch.gravConst;
   private Point pivot;
   private float armLen;
   private float theta;
@@ -20,7 +20,7 @@ public class Pendulum {
     this.armLen = armLen;
     this.theta = deg * (PI / 180);
     this.startTheta = theta;
-    period = (PI / 2) * sqrt(armLen / GRAV_CONST);
+    period = (PI / 2) * sqrt(armLen / gravConst);
     time = 0;
     setColor(numPends, index);
   }
