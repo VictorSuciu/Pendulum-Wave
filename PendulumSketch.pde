@@ -3,14 +3,14 @@ static float gravConst = 5;
 
 final int winW = 1150;
 final int winH = 700;
-Point pivot = new Point(winW / 2.0, 0);
-float maxLen = min((winW / 2) - 10, winH - 10);
+Point pivot;
+float maxLen;
 float timeRep = 70;
 int numPends = 20;
-int pendBetween = 2;
+int pendBetween = 0;
 int deg = 40;
 float k;
-
+boolean doneBuildingUI = false;
 Wave pendWave;
 
 ControlP5 cp5;
@@ -21,21 +21,21 @@ ControlP5 cp5;
 //Slider lengthSlide;
 
 
-
+void settings() {
+  //size(winW, winH);
+  fullScreen();
+}
 void setup() {
-  size(1150, 700);
+  
   background(50);
   frameRate(30);
-  
+  pivot = new Point(width / 2.0, 20);
+  maxLen = min((width / 2) - 10, height - 10);
   pendWave = new Wave(numPends, timeRep, maxLen, pivot, deg, pendBetween);
   
-  //angle slider
-  //num pendulums slider
-  //gravity slider
-  //time peperiod slider
-  //max lenght slider
   
   buildUI();
+  doneBuildingUI = true;
 }
 
 void buildUI() {
@@ -43,12 +43,14 @@ void buildUI() {
   int sliderW = 150;
   int sliderH = 30;
   int inset = 10;
-  int insetV = 30;
-  int updateW = 100;
+  int insetV = 10;
+  int updateW = 140;
   int updateH = 50;
+  int topY = 40;
   
+  println("PENDBETWEEN = " + pendBetween);
   cp5.addSlider("Line Between Every ___")
-     .setPosition(inset, 100 + (0 * (sliderH + insetV)))
+     .setPosition(inset, topY + (0 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, numPends / 2)
      .setNumberOfTickMarks(numPends / 2 + 1)
@@ -57,7 +59,7 @@ void buildUI() {
      .setValue(pendBetween);
      
   cp5.addSlider("Swing Angle")
-     .setPosition(inset, 100 + (2 * (sliderH + insetV)))
+     .setPosition(inset, topY + (2 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 90)
      .setNumberOfTickMarks(91)
@@ -67,10 +69,10 @@ void buildUI() {
      .setValue(deg);
      
   cp5.addSlider("Number of Pendulums")
-     .setPosition(inset, 100 + (3 * (sliderH + insetV)))
+     .setPosition(inset, topY + (3 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
-     .setRange(1, 100)
-     .setNumberOfTickMarks(100)
+     .setRange(1, 200)
+     .setNumberOfTickMarks(200)
      .snapToTickMarks(true)
      .showTickMarks(false)
      .setValue(numPends);
@@ -78,22 +80,22 @@ void buildUI() {
   
      
   cp5.addSlider("Grvitaty (m/s/s)")
-     .setPosition(inset, 100 + (4 * (sliderH + insetV)))
+     .setPosition(inset, topY + (4 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 50)
      .setValue(gravConst);
      
   cp5.addSlider("Time Period")
-     .setPosition(inset, 100 + (5 * (sliderH + insetV)))
+     .setPosition(inset, topY + (5 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
-     .setRange(1, 200)
-     .setNumberOfTickMarks(200)
+     .setRange(1, 500)
+     .setNumberOfTickMarks(500)
      .snapToTickMarks(true)
      .showTickMarks(false)
      .setValue(timeRep);
      
   cp5.addSlider("Longest Pendulum Length")
-     .setPosition(inset, 100 + (6 * (sliderH + insetV)))
+     .setPosition(inset, topY + (6 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 1000)
      .setNumberOfTickMarks(1001)
@@ -102,7 +104,7 @@ void buildUI() {
      .setValue(maxLen);
      
   cp5.addButton("Update and Reset")
-     .setPosition(inset - (updateW / 2) + (sliderW / 2), 100 + (7 * (sliderH + insetV)))
+     .setPosition(inset - (updateW / 2) + (sliderW / 2), topY + (7 * (sliderH + insetV)))
      .setSize(updateW, updateH);
    
 }
@@ -119,10 +121,15 @@ public void controlEvent(ControlEvent e) {
     
     println("BUTTON PRESSED");
     pendWave.reset(numPends, timeRep, maxLen, pivot, deg, pendBetween);
-  }
-  else if(e.getController().getName().equals("Line Between Every ___")) {
-    pendBetween = (int)cp5.getController("Line Between Every ___").getValue();
     
+    ((Slider)cp5.getController("Line Between Every ___")).setRange(0, numPends / 2)
+                                                         .setNumberOfTickMarks(numPends / 2 + 1)
+                                                         //.snapToTickMarks(true)
+                                                         .showTickMarks(false);
+  }
+  else if(e.getController().getName().equals("Line Between Every ___") && doneBuildingUI) {
+    pendBetween = (int)cp5.getController("Line Between Every ___").getValue();
+    println("PENDBETWEEN = " + pendBetween);
   }
 }
 
