@@ -1,5 +1,5 @@
 import controlP5.*;
-static float gravConst = 5;
+static float gravConst = 9.8;
 
 final int winW = 1150;
 final int winH = 700;
@@ -62,9 +62,11 @@ void buildUI() {
      .showTickMarks(false)
      .setValue(pendBetween)
      .setLabel("");
-  cp5.addTextfield("lineBetweenTxt")
+  cp5.addTextfield("pendBetweenTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (0 * (sliderH + insetV)))
+     .setText("" + pendBetween)
+     .setAutoClear(false)
      .setLabel("Line Between Every ___ \nPendulums");
      
   cp5.addSlider("degS")
@@ -74,12 +76,13 @@ void buildUI() {
      .setNumberOfTickMarks(91)
      .snapToTickMarks(true)
      .showTickMarks(false)
-     .linebreak()
      .setValue(deg)
      .setLabel("");
   cp5.addTextfield("degTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (2 * (sliderH + insetV)))
+     .setText("" + deg)
+     .setAutoClear(false)
      .setLabel("Swing Angle");
      
   cp5.addSlider("numPendsS")
@@ -94,6 +97,8 @@ void buildUI() {
   cp5.addTextfield("numPendsTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (3 * (sliderH + insetV)))
+     .setText("" + numPends)
+     .setAutoClear(false)
      .setLabel("Number of Pendulums");  
   
      
@@ -101,11 +106,16 @@ void buildUI() {
      .setPosition(inset, topY + (4 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 50)
+     .setNumberOfTickMarks(501)
+     .snapToTickMarks(true)
+     .showTickMarks(false)
      .setValue(gravConst)
      .setLabel("");
   cp5.addTextfield("gravConstTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (4 * (sliderH + insetV)))
+     .setText("" + gravConst)
+     .setAutoClear(false)
      .setLabel("Gravity (m/s/s)");
      
   cp5.addSlider("timeRepS")
@@ -120,6 +130,8 @@ void buildUI() {
   cp5.addTextfield("timeRepTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (5 * (sliderH + insetV)))
+     .setText("" + timeRep)
+     .setAutoClear(false)
      .setLabel("Wave Cycle Period (seconds)");
      
   cp5.addSlider("maxLenS")
@@ -134,6 +146,8 @@ void buildUI() {
   cp5.addTextfield("maxLenTxt")
      .setSize(txtW, txtH)
      .setPosition(insetTxt, topY + (6 * (sliderH + insetV)))
+     .setText("" + maxLen)
+     .setAutoClear(false)
      .setLabel("Longest Pendulum Length");
      
   cp5.addButton("Update and Reset")
@@ -165,7 +179,7 @@ public void controlEvent(ControlEvent e) {
     //((Textfield)cp5.getController("pendBetweenTxt")).setValue(pendBetween);
     
   }
-  else if(e.getController().getName().charAt(e.getController().getName().length() - 1) == 'S' && doneBuildingUI) {
+  if(e.getController().getName().charAt(e.getController().getName().length() - 1) == 'S' && doneBuildingUI) {
     println("UPDATING TXT");
     ((Textfield)cp5.getController(e.getController()
                        .getName()
@@ -173,7 +187,7 @@ public void controlEvent(ControlEvent e) {
                                       .getName()
                                       .length() - 1) 
                                  + "Txt"))
-       .setText("" + ((Slider)e.getController()).getValue());
+       .setText("" + (int)(((Slider)e.getController()).getValue() * 100.0) / 100.0);
        
        ((Textfield)cp5.getController(e.getController()
                        .getName()
@@ -190,8 +204,26 @@ public void controlEvent(ControlEvent e) {
                                       .length() - 1) 
                                  + "Txt");
   }
-  
+  if(e.getController().getName().charAt(e.getController().getName().length() - 1) == 't' && doneBuildingUI) {
+    println("TYPED IN TEXTFIELDD");
+    String strVal = ((Textfield)e.getController()).getText();
+    try {
+      float val = Float.parseFloat(strVal);
+      ((Slider)cp5.getController(e.getController()
+                       .getName()
+                       .substring(0, e.getController()
+                                      .getName()
+                                      .length() - 3) 
+                                 + "S"))
+       .setValue((int)(val * 100.0) / 100.0);
+    }
+    catch(NumberFormatException error) {
+      println("Could not convert to float: " + strVal);
+    }
+  }
 }
+
+  
 
 void draw() {
   clear();

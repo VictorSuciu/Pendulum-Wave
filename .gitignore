@@ -1,0 +1,9 @@
+application.linux-arm64/
+
+application.linux-armv6hf/
+
+application.macosx/
+
+application.windows32/
+
+application.windows64/
