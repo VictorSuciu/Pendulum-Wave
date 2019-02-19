@@ -39,7 +39,7 @@ public class Pendulum {
     //drawPendulum();
   }
   private void updateTime() {
-    time = (time + 1) % (period * (2 * PI));
+    time = (time + (30.0 / fps)) % (period * (2 * PI));
   }
   void drawPendulum() {
     

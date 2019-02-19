@@ -9,17 +9,25 @@ float timeRep = 70;
 int numPends = 20;
 int pendBetween = 0;
 int deg = 40;
+int fps = 30;
 float k;
 boolean doneBuildingUI = false;
 Wave pendWave;
 
+//GUI
 ControlP5 cp5;
-//Slider angleSlide;
-//Slider numPendSlide;
-//Slider gravSlide;
-//Slider timeSlide;
-//Slider lengthSlide;
 
+int sliderW = 150;
+int sliderH = 30;
+int txtW = 40;
+int txtH = sliderH;
+int insetTxt = 10;
+int inset = insetTxt + txtW;
+int insetV = 40;
+int updateW = 140;
+int updateH = 50;
+int topY = 40;
+int uiEndConst = insetTxt + txtW + sliderW + 10;
 
 void settings() {
   //size(winW, winH);
@@ -28,10 +36,10 @@ void settings() {
 void setup() {
   
   background(50);
-  frameRate(30);
-  pivot = new Point(width / 2.0, 20);
-  maxLen = min((width / 2) - 10, height - 10);
-  pendWave = new Wave(numPends, timeRep, maxLen, pivot, deg, pendBetween);
+  frameRate(fps);
+  pivot = new Point(uiEndConst + ((width - uiEndConst) / 2.0), 20);
+  maxLen = min(((width - uiEndConst) / 2) - 15, height - 15);
+  pendWave = new Wave(numPends, timeRep, maxLen, pivot, deg, pendBetween, fps);
   
   
   buildUI();
@@ -40,25 +48,26 @@ void setup() {
 
 void buildUI() {
   cp5 = new ControlP5(this);
-  int sliderW = 150;
-  int sliderH = 30;
-  int inset = 10;
-  int insetV = 10;
-  int updateW = 140;
-  int updateH = 50;
-  int topY = 40;
   
+  
+  PFont font = createFont("arial", 11);
+  cp5.setFont(font);
   println("PENDBETWEEN = " + pendBetween);
-  cp5.addSlider("Line Between Every ___")
+  cp5.addSlider("pendBetweenS")
      .setPosition(inset, topY + (0 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, numPends / 2)
      .setNumberOfTickMarks(numPends / 2 + 1)
      .snapToTickMarks(true)
      .showTickMarks(false)
-     .setValue(pendBetween);
+     .setValue(pendBetween)
+     .setLabel("");
+  cp5.addTextfield("lineBetweenTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (0 * (sliderH + insetV)))
+     .setLabel("Line Between Every ___ \nPendulums");
      
-  cp5.addSlider("Swing Angle")
+  cp5.addSlider("degS")
      .setPosition(inset, topY + (2 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 90)
@@ -66,45 +75,69 @@ void buildUI() {
      .snapToTickMarks(true)
      .showTickMarks(false)
      .linebreak()
-     .setValue(deg);
+     .setValue(deg)
+     .setLabel("");
+  cp5.addTextfield("degTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (2 * (sliderH + insetV)))
+     .setLabel("Swing Angle");
      
-  cp5.addSlider("Number of Pendulums")
+  cp5.addSlider("numPendsS")
      .setPosition(inset, topY + (3 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(1, 200)
      .setNumberOfTickMarks(200)
      .snapToTickMarks(true)
      .showTickMarks(false)
-     .setValue(numPends);
-     
+     .setValue(numPends)
+     .setLabel("");
+  cp5.addTextfield("numPendsTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (3 * (sliderH + insetV)))
+     .setLabel("Number of Pendulums");  
   
      
-  cp5.addSlider("Grvitaty (m/s/s)")
+  cp5.addSlider("gravConstS")
      .setPosition(inset, topY + (4 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 50)
-     .setValue(gravConst);
+     .setValue(gravConst)
+     .setLabel("");
+  cp5.addTextfield("gravConstTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (4 * (sliderH + insetV)))
+     .setLabel("Gravity (m/s/s)");
      
-  cp5.addSlider("Time Period")
+  cp5.addSlider("timeRepS")
      .setPosition(inset, topY + (5 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(1, 500)
      .setNumberOfTickMarks(500)
      .snapToTickMarks(true)
      .showTickMarks(false)
-     .setValue(timeRep);
+     .setValue(timeRep)
+     .setLabel("");
+  cp5.addTextfield("timeRepTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (5 * (sliderH + insetV)))
+     .setLabel("Wave Cycle Period (seconds)");
      
-  cp5.addSlider("Longest Pendulum Length")
+  cp5.addSlider("maxLenS")
      .setPosition(inset, topY + (6 * (sliderH + insetV)))
      .setSize(sliderW, sliderH)
      .setRange(0, 1000)
      .setNumberOfTickMarks(1001)
      .snapToTickMarks(true)
      .showTickMarks(false)
-     .setValue(maxLen);
+     .setValue(maxLen)
+     .setLabel("");
+  cp5.addTextfield("maxLenTxt")
+     .setSize(txtW, txtH)
+     .setPosition(insetTxt, topY + (6 * (sliderH + insetV)))
+     .setLabel("Longest Pendulum Length");
      
   cp5.addButton("Update and Reset")
-     .setPosition(inset - (updateW / 2) + (sliderW / 2), topY + (7 * (sliderH + insetV)))
+     .setPosition(insetTxt + ((sliderW + txtW) / 2) - (updateW / 2), topY + (7 * (sliderH + insetV)))
      .setSize(updateW, updateH);
    
 }
@@ -112,25 +145,52 @@ void buildUI() {
 public void controlEvent(ControlEvent e) {
   if(e.getController().getName().equals("Update and Reset")) {
     
-    maxLen = cp5.getController("Longest Pendulum Length").getValue();
-    timeRep = cp5.getController("Time Period").getValue();
-    numPends = (int)cp5.getController("Number of Pendulums").getValue();
-    pendBetween = (int)cp5.getController("Line Between Every ___").getValue();
-    deg = (int)cp5.getController("Swing Angle").getValue();
-    gravConst = cp5.getController("Grvitaty (m/s/s)").getValue();
+    maxLen = cp5.getController("maxLenS").getValue();
+    timeRep = cp5.getController("timeRepS").getValue();
+    numPends = (int)cp5.getController("numPendsS").getValue();
+    pendBetween = (int)cp5.getController("pendBetweenS").getValue();
+    deg = (int)cp5.getController("degS").getValue();
+    gravConst = cp5.getController("gravConstS").getValue();
     
-    println("BUTTON PRESSED");
-    pendWave.reset(numPends, timeRep, maxLen, pivot, deg, pendBetween);
+    pendWave.reset(numPends, timeRep, maxLen, pivot, deg, pendBetween, fps);
     
-    ((Slider)cp5.getController("Line Between Every ___")).setRange(0, numPends / 2)
+    ((Slider)cp5.getController("pendBetweenS")).setRange(0, numPends / 2)
                                                          .setNumberOfTickMarks(numPends / 2 + 1)
                                                          //.snapToTickMarks(true)
                                                          .showTickMarks(false);
   }
-  else if(e.getController().getName().equals("Line Between Every ___") && doneBuildingUI) {
-    pendBetween = (int)cp5.getController("Line Between Every ___").getValue();
+  else if(e.getController().getName().equals("pendBetweenS") && doneBuildingUI) {
     println("PENDBETWEEN = " + pendBetween);
+    pendBetween = (int)((Slider)cp5.getController("pendBetweenS")).getValue();
+    //((Textfield)cp5.getController("pendBetweenTxt")).setValue(pendBetween);
+    
   }
+  else if(e.getController().getName().charAt(e.getController().getName().length() - 1) == 'S' && doneBuildingUI) {
+    println("UPDATING TXT");
+    ((Textfield)cp5.getController(e.getController()
+                       .getName()
+                       .substring(0, e.getController()
+                                      .getName()
+                                      .length() - 1) 
+                                 + "Txt"))
+       .setText("" + ((Slider)e.getController()).getValue());
+       
+       ((Textfield)cp5.getController(e.getController()
+                       .getName()
+                       .substring(0, e.getController()
+                                      .getName()
+                                      .length() - 1) 
+                                 + "Txt"))
+       .update();
+       
+       println(e.getController()
+                       .getName()
+                       .substring(0, e.getController()
+                                      .getName()
+                                      .length() - 1) 
+                                 + "Txt");
+  }
+  
 }
 
 void draw() {
@@ -138,7 +198,10 @@ void draw() {
   background(50);
   
   pendWave.update(pendBetween);
-  
+  fill(30, 30, 30, 127);
+  //tint(0x151515, 75);
+  rect(0, 0, uiEndConst, height); 
+  //noTint();
   //p1.updatePosition();
   //p2.updatePosition();
 }
