@@ -13,6 +13,8 @@ reveal hidden patterns created by the wave
 
 <br>
 
+<br>
+
 ![Alt Text](https://github.com/VictorSuciu/README-Assets/blob/master/Pendulum/PendulumGif200.gif)
 
 > Simulates up to 200 synchronized pendulums!
