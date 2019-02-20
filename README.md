@@ -6,7 +6,7 @@ This Processing Sketch simulates a pendulum wave with accurate pendulum arm leng
 
 <br>
 
-![Alt Text](https://github.com/VictorSuciu/README-Assets/blob/master/Pendulum/PendulumGif.gif)
+![Alt Text](https://github.com/VictorSuciu/README-Assets/blob/master/Pendulum/PendulumGif2HD.gif)
 
 > The user can draw lines between every pendulum, every other pendulum, every 3rd, 4th, or more to
 reveal hidden patterns created by the wave
