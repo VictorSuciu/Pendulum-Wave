@@ -9,8 +9,9 @@ float timeRep = 70;
 int numPends = 20;
 int pendBetween = 0;
 int deg = 40;
-int fps = 30;
+int fps = 60;
 float k;
+float count = 0;
 boolean doneBuildingUI = false;
 Wave pendWave;
 
@@ -157,6 +158,7 @@ void buildUI() {
 }
 
 public void controlEvent(ControlEvent e) {
+  
   if(e.getController().getName().equals("Update and Reset")) {
     
     maxLen = cp5.getController("maxLenS").getValue();
@@ -174,7 +176,7 @@ public void controlEvent(ControlEvent e) {
                                                          .showTickMarks(false);
   }
   else if(e.getController().getName().equals("pendBetweenS") && doneBuildingUI) {
-    println("PENDBETWEEN = " + pendBetween);
+    //println("PENDBETWEEN = " + pendBetween);
     pendBetween = (int)((Slider)cp5.getController("pendBetweenS")).getValue();
     //((Textfield)cp5.getController("pendBetweenTxt")).setValue(pendBetween);
     
@@ -197,12 +199,12 @@ public void controlEvent(ControlEvent e) {
                                  + "Txt"))
        .update();
        
-       println(e.getController()
-                       .getName()
-                       .substring(0, e.getController()
-                                      .getName()
-                                      .length() - 1) 
-                                 + "Txt");
+       //println(e.getController()
+       //                .getName()
+       //                .substring(0, e.getController()
+       //                               .getName()
+       //                               .length() - 1) 
+       //                          + "Txt");
   }
   if(e.getController().getName().charAt(e.getController().getName().length() - 1) == 't' && doneBuildingUI) {
     println("TYPED IN TEXTFIELDD");

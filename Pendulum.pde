@@ -29,7 +29,7 @@ public class Pendulum {
     bobR = (int)(127.5 * (   cos( (  (index * ((float)colorPeriod / (float)numPends)) * endConst - (0) ) / ((float)colorPeriod / (2 * PI))   )   + 1));
     bobG = (int)(127.5 * (   cos( (  (index * ((float)colorPeriod / (float)numPends)) * endConst - ((float)colorPeriod/3.0)  ) / ((float)colorPeriod / (2 * PI))   )   + 1));
     bobB = (int)(127.5 * (   cos( (  (index * ((float)colorPeriod / (float)numPends)) * endConst - (2.0*(float)colorPeriod/3.0)  ) / ((float)colorPeriod / (2 * PI))   )   + 1));
-    println(index + " " + bobR + " " + bobG + " " + bobB);
+    //println(index + " " + bobR + " " + bobG + " " + bobB);
 }
   void updatePosition() {
     updateTime();

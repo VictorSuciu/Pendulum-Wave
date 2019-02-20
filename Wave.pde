@@ -28,8 +28,8 @@ public class Wave {
     float pendLen;
     for(int i = 0; i < numPends; i++) {
       k = (2 * PI * sqrt(maxLen / gravConst));
-      on = ( (timeRep * fps) / (2.0 * PI * sqrt(maxLen / gravConst))) + i;
-      pendLen = gravConst * pow((timeRep * fps) / ((2 * PI) * (on)) , 2);
+      on = ( (timeRep * 30.0) / (2.0 * PI * sqrt(maxLen / gravConst))) + i;
+      pendLen = gravConst * pow((timeRep * 30.0) / ((2 * PI) * (on)) , 2);
       pendList.add(new Pendulum(pivot, pendLen, deg, numPends, i));
       //pendList.add(new Pendulum(pivot, 300 + (i * 20), 60, numPends, i));
     }
