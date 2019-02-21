@@ -2,6 +2,10 @@
 
 This Processing Sketch simulates a pendulum wave with accurate pendulum arm length ratios.
 
+## Downloads
+
+[Windows and Linux](https://github.com/VictorSuciu/README-Assets/tree/master/Pendulum/Downloads)
+
 <br>
 
 <br>
